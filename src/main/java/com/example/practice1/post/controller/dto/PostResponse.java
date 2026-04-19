@@ -1,6 +1,6 @@
-package com.example.practice1.controller.dto;
+package com.example.practice1.post.controller.dto;
 
-import com.example.practice1.controller.entity.PostEntity;
+import com.example.practice1.post.controller.entity.PostEntity;
 
 public record PostResponse(Long id, String title, String content, String author) {
 
