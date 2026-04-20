@@ -1,9 +1,9 @@
-package com.example.practice1.service;
+package com.example.practice1.post.service;
 
-import com.example.practice1.controller.dto.PostRequest;
-import com.example.practice1.controller.dto.PostResponse;
-import com.example.practice1.controller.entity.PostEntity;
-import com.example.practice1.repository.PostRepository;
+import com.example.practice1.post.controller.dto.PostRequest;
+import com.example.practice1.post.controller.dto.PostResponse;
+import com.example.practice1.post.controller.entity.PostEntity;
+import com.example.practice1.post.repository.PostRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +16,8 @@ public class PostService {
   private final PostRepository postRepository;
 
   public PostResponse save(PostRequest request) {
-    PostEntity entity = new PostEntity(request.title(), request.content(), request.author());
-    PostEntity returnedEntity = postRepository.save(entity);
-
-    return new PostResponse(returnedEntity.getId(), returnedEntity.getTitle(),
-        returnedEntity.getContent(), returnedEntity.getAuthor());
+    PostEntity entity = PostEntity.fromRequest(request);
+    return PostResponse.fromEntity(postRepository.save(entity));
   }
 
   public List<PostResponse> findAll() {
