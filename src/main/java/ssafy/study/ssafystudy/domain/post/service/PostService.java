@@ -1,5 +1,6 @@
 package ssafy.study.ssafystudy.domain.post.service;
 
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class PostService {
     MemberEntity author = memberRepository.findById(authorId)
         .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-    PostEntity entity = request.toEntity(author);
+    PostEntity entity = request.fromEntity(author);
     return PostResponse.fromEntity(postRepository.save(entity));
   }
 
@@ -46,6 +47,7 @@ public class PostService {
     return PostResponse.fromEntity(entity);
   }
 
+  @Transactional
   public PostResponse update(PostRequest request, Long id, Long authorId) {
     MemberEntity author = memberRepository.findById(authorId)
         .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));

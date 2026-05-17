@@ -1,43 +1,19 @@
 package ssafy.study.ssafystudy.domain.post.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ssafy.study.ssafystudy.domain.post.entity.PostEntity;
 
 @Repository
-public class PostRepository {
+public interface PostRepository extends JpaRepository<PostEntity, Long> {
 
-  List<PostEntity> postList = new ArrayList<>();
+  public PostEntity save(PostEntity entity);
 
-  public PostEntity save(PostEntity postEntity) {
-    postList.add(postEntity);
+  public List<PostEntity> findAll();
 
-    return postEntity;
-  }
+  public Optional<PostEntity> findById(Long id);
 
-  public List<PostEntity> findAll() {
-    return postList;
-  }
-
-  // null 값이 있을 경우 NullPointException이 아닌
-  // 다른 예외처리를 할 수 있도록, null처리를 할 수 있도록 하기 위해
-  // Optional<> 사용
-  public Optional<PostEntity> findById(Long id) {
-    for (PostEntity entity : postList) {
-      if (entity.getId().equals(id)) {
-        return Optional.of(entity);
-      }
-    }
-    return Optional.empty();
-  }
-
-  public void deleteById(Long id) {
-    // 람다표현식
-    // removeIf(조건) -> 리스트에서 조건이 true인 요소를 삭제하는 메서드
-    // entity 한개씩 꺼내면서, entity.getId().equals(id)가 true면
-    // entity삭제
-    postList.removeIf(entity -> entity.getId().equals(id));
-  }
+  public void delete(PostEntity entity);
 }
