@@ -1,33 +1,17 @@
 package ssafy.study.ssafystudy.domain.member.repository;
 
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ssafy.study.ssafystudy.domain.member.entity.MemberEntity;
 
 @Repository
-public class MemberRepository {
+public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 
-  private static final Map<Long, MemberEntity> memberStore = new ConcurrentHashMap<>();
-  private static Long AUTO_INCREMENT = 1L;
+  public MemberEntity save(MemberEntity memberEntity);
 
-  public Optional<MemberEntity> findById(Long id) {
-    return memberStore.values().stream().filter(memberEntity -> (memberEntity.getId().equals(id)))
-        .findAny();
-  }
+  public Optional<MemberEntity> findById(Long memberId);
 
-  // 회원 엔티티 저장(ID 자동 생성 로직 포함)
-  public MemberEntity save(MemberEntity member) {
-    memberStore.put(member.getId(), member); // ++한 member.getId()를 가져온다.
-    return member;
-  }
+  public Optional<MemberEntity> findByLoginId(String loginId);
 
-  public Optional<MemberEntity> findByLoginId(String loginId) {
-
-    return memberStore.values().
-        stream().
-        filter(memberEntity -> (memberEntity.getLoginId().equals(loginId))).
-        findAny();
-  }
 }
